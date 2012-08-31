@@ -1,20 +1,15 @@
 package wsattacker.plugin.signatureWrapping.util.signature;
 
-import static wsattacker.plugin.signatureWrapping.util.dom.DomUtilities.findChildren;
-import static wsattacker.plugin.signatureWrapping.util.dom.DomUtilities.getFirstChildElement;
-import static wsattacker.plugin.signatureWrapping.util.signature.NamespaceConstants.URI_NS_WSSE_1_0;
-import static wsattacker.plugin.signatureWrapping.util.signature.NamespaceConstants.URI_NS_WSSE_1_1;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.xml.crypto.dsig.XMLSignature;
-
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-
 import wsattacker.plugin.signatureWrapping.option.OptionPayload;
+
+import javax.xml.crypto.dsig.XMLSignature;
+import java.util.ArrayList;
+import java.util.List;
+
+import static wsattacker.plugin.signatureWrapping.util.dom.DomUtilities.findChildren;
 
 /**
  * This class defines which parts of an XML Document is signed. For this concrete use-case, it searches for a
@@ -83,22 +78,22 @@ public class SignatureManager
     // Element sigElement =
     // getFirstChildElement(getFirstChildElement(getFirstChildElement(doc.getDocumentElement())));
     Element envelope = doc.getDocumentElement();
-    // Element envelope = getFirstChildElement(doc);
-    Element header = getFirstChildElement(envelope);
+//    // Element envelope = getFirstChildElement(doc);
+//    Element header = getFirstChildElement(envelope);
+//
+//    List<Element> securityList = findChildren(header, "Security", URI_NS_WSSE_1_0);
+//    if (securityList.size() != 1)
+//    {
+//      securityList = findChildren(header, "Security", URI_NS_WSSE_1_1);
+//      if (securityList.size() != 1)
+//      {
+//        log().warn("Could not find WS Security Header");
+//        return;
+//      }
+//    }
+//    Element security = securityList.get(0);
 
-    List<Element> securityList = findChildren(header, "Security", URI_NS_WSSE_1_0);
-    if (securityList.size() != 1)
-    {
-      securityList = findChildren(header, "Security", URI_NS_WSSE_1_1);
-      if (securityList.size() != 1)
-      {
-        log().warn("Could not find WS Security Header");
-        return;
-      }
-    }
-    Element security = securityList.get(0);
-
-    List<Element> signatureList = findChildren(security, "Signature", XMLSignature.XMLNS);
+    List<Element> signatureList = findChildren(envelope, "Signature", XMLSignature.XMLNS);
     if (signatureList.size() != 1)
     {
       log().warn("There are " + signatureList.size() + " Signature Elements");
@@ -119,9 +114,9 @@ public class SignatureManager
   public List<OptionPayload> getPayloads()
   {
     List<OptionPayload> payloads = new ArrayList<OptionPayload>();
-    if (getSignatureElement() != null)
+    if (sig != null)
     {
-      for (ReferenceElement ref : getSignatureElement().getReferences())
+      for (ReferenceElement ref : sig.getReferences())
       {
         if (ref.getPayload() != null)
           payloads.add(ref.getPayload());

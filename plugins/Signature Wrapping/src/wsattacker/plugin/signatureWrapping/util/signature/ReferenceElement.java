@@ -1,16 +1,15 @@
 package wsattacker.plugin.signatureWrapping.util.signature;
 
-import java.util.*;
-
-import javax.xml.crypto.dsig.XMLSignature;
-import javax.xml.xpath.XPathExpressionException;
-
 import org.apache.log4j.Logger;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
-
 import wsattacker.plugin.signatureWrapping.option.OptionPayload;
 import wsattacker.plugin.signatureWrapping.util.dom.DomUtilities;
+
+import javax.xml.crypto.dsig.XMLSignature;
+import javax.xml.xpath.XPathExpressionException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ReferenceElement implements ReferringElementInterface
 {
@@ -74,7 +73,7 @@ public class ReferenceElement implements ReferringElementInterface
       List<Element> referenced;
       try
       {
-        referenced = DomUtilities.evaluateXPath(reference.getOwnerDocument(), "//*[@Id='" + ref + "']");
+        referenced = DomUtilities.evaluateXPath(reference.getOwnerDocument(), "//*[@ID='" + ref + "']");
       }
       catch (XPathExpressionException e)
       {
@@ -85,7 +84,7 @@ public class ReferenceElement implements ReferringElementInterface
         referenced = DomUtilities.findElementByWsuId(reference.getOwnerDocument(), ref);
       }
       if (referenced.size() != 1)
-        log.warn("There are " + referenced.size() + " possible References which macht the URI '" + ref + "'. This is invalid and must produce errors.");
+        log.warn("There are " + referenced.size() + " possible References which match the URI '" + ref + "'. This is invalid and must produce errors.");
       referencedElement = referenced.get(0);
 
       this.payload = new OptionPayload(this, "Reference Element:" + toString(), referencedElement, toString());
@@ -146,7 +145,7 @@ public class ReferenceElement implements ReferringElementInterface
   }
   
   public String transformIDtoXPath() {
-    Attr id = referencedElement.getAttributeNodeNS(NamespaceConstants.URI_NS_WSU, "Id");
+    Attr id = referencedElement.getAttributeNode("ID");
     String prefix = "";
     String value = "";
     if (id.getPrefix() != null)
@@ -156,7 +155,7 @@ public class ReferenceElement implements ReferringElementInterface
     }
     else
     {
-      value = referencedElement.getAttribute("Id");
+      value = referencedElement.getAttribute("ID");
     }
     return  "//*[@" + prefix + "Id='" + value + "']";
     

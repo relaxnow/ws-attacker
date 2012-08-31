@@ -12,6 +12,7 @@ public class NamespaceConstants
   final public static String URI_NS_XF                   = "http://www.w3.org/2002/06/xmldsig-filter2";
   final public static String URI_NS_SCHEMA               = "http://www.w3.org/2001/XMLSchema";
   final public static String URI_NS_WSATTACKER           = "http://sourceforge.net/projects/ws-attacker/";
+  final public static String URI_NS_SAMLP = "urn:oasis:names:tc:SAML:2.0:protocol";
 
   final public static String PREFIX_NS_SOAP_1_1_ENVELOPE = "soapenv";
   final public static String PREFIX_NS_SOAP_1_2_ENVELOPE = "soap";
@@ -21,5 +22,4 @@ public class NamespaceConstants
   final public static String PREFIX_NS_XF                = "xf";
   final public static String PREFIX_NS_SCHEMA            = "xs";
   final public static String PREFIX_NS_WSATTACKER        = "wsatk";
-
 }

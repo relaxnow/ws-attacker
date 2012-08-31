@@ -1,16 +1,14 @@
 package wsattacker.plugin.signatureWrapping;
 
-import static wsattacker.plugin.signatureWrapping.util.dom.DomUtilities.domToString;
-import static wsattacker.plugin.signatureWrapping.util.dom.DomUtilities.showOnlyImportant;
-
-import java.io.File;
-import java.util.List;
-
+import com.eviware.soapui.impl.wsdl.WsdlRequest;
+import com.eviware.soapui.impl.wsdl.WsdlSubmit;
+import com.eviware.soapui.impl.wsdl.WsdlSubmitContext;
+import com.eviware.soapui.impl.wsdl.support.soap.SoapUtils;
+import com.eviware.soapui.model.iface.Request.SubmitException;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.xmlbeans.XmlException;
 import org.w3c.dom.Document;
-
 import wsattacker.main.composition.plugin.AbstractPlugin;
 import wsattacker.main.composition.plugin.option.AbstractOption;
 import wsattacker.main.composition.testsuite.RequestResponsePair;
@@ -28,11 +26,11 @@ import wsattacker.plugin.signatureWrapping.util.signature.SignatureManager;
 import wsattacker.plugin.signatureWrapping.xpath.weakness.util.WeaknessLog;
 import wsattacker.plugin.signatureWrapping.xpath.wrapping.WrappingOracle;
 
-import com.eviware.soapui.impl.wsdl.WsdlRequest;
-import com.eviware.soapui.impl.wsdl.WsdlSubmit;
-import com.eviware.soapui.impl.wsdl.WsdlSubmitContext;
-import com.eviware.soapui.impl.wsdl.support.soap.SoapUtils;
-import com.eviware.soapui.model.iface.Request.SubmitException;
+import java.io.File;
+import java.util.List;
+
+import static wsattacker.plugin.signatureWrapping.util.dom.DomUtilities.domToString;
+import static wsattacker.plugin.signatureWrapping.util.dom.DomUtilities.showOnlyImportant;
 
 /**
  * This class integrates the XSW Plugin into the WS-Attacker framework.
@@ -121,12 +119,11 @@ public class SignatureWrapping extends AbstractPlugin
 
     WrappingOracle wrappingOracle = new WrappingOracle(signatureManager.getDocument(), signatureManager.getPayloads(), usedSchemaAnalyser);
 
-    int signedElements = wrappingOracle.getCountSignedElements();
-    int elementsByID = wrappingOracle.getCountElementsReferedByID();
-    int elementsByXPath = wrappingOracle.getCountElementsReferedByXPath();
-    int elementsByFastXPath = wrappingOracle.getCountElementsReferedByFastXPath();
-    int elementsByPrefixfreeTransformedFastXPath = wrappingOracle
-        .getCountElementsReferedByPrefixfreeTransformedFastXPath();
+    int signedElements                          = wrappingOracle.getCountSignedElements();
+    int elementsByID                            = wrappingOracle.getCountElementsReferedByID();
+    int elementsByXPath                         = wrappingOracle.getCountElementsReferedByXPath();
+    int elementsByFastXPath                     = wrappingOracle.getCountElementsReferedByFastXPath();
+    int elementsByPrefixfreeTransformedFastXPath= wrappingOracle.getCountElementsReferedByPrefixfreeTransformedFastXPath();
 
     important(String
         .format("%d signed Elements:\n--> %d by ID\n--> %d by XPath\n  `--> %d by FastXPath\n  `--> %d by prefix free FastXPath (best)", signedElements, elementsByID, elementsByXPath, elementsByFastXPath, elementsByPrefixfreeTransformedFastXPath));
